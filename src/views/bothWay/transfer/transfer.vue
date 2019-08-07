@@ -1,0 +1,247 @@
+<template>
+  <div class="box">
+    <div class="title">
+      <span>转诊数据</span>
+      <div class="market_out">
+        <div class="fr" style="margin-right: 20px">
+          <el-radio-group v-model="radio1" @change="getNewData(radio1)">
+            <el-radio-button label="0">全部</el-radio-button>
+            <el-radio-button label="1">今日</el-radio-button>
+            <el-radio-button label="2">本周</el-radio-button>
+            <el-radio-button label="3">本月</el-radio-button>
+            <el-radio-button label="4">全年</el-radio-button>
+          </el-radio-group>
+        </div>
+        <el-date-picker
+          @change="selectTime"
+          class="fr"
+          v-model="value2"
+          type="daterange"
+          align="right"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd"
+        >
+        </el-date-picker>
+      </div>
+    </div>
+    <div class="info">
+      <ul>
+        <li>
+          <span>总转诊数</span>
+          <p>{{titleData.oneLevelAmount}}0</p>
+        </li>
+        <li>
+          <span>上转数量</span>
+          <p>{{titleData.twoLevelAmount}}1</p>
+        </li>
+        <li>
+          <span>下转数量</span>
+          <p>{{titleData.threeLevelAmount}}2</p>
+        </li>
+        <li>
+          <span>转诊平均耗时</span>
+          <p>{{titleData.officialDoctorAmount}}3</p>
+        </li>
+
+      </ul>
+    </div>
+    <div class="table-wrap">
+      <div>本区域机构转诊数据</div>
+      <el-table>
+        :data="tableData"
+        style="width: 100%"
+        :default-sort="{prop: 'date', order: 'descending'}"
+        empty-text="暂无数据"
+        :fit="true"
+        >
+        <el-table-column
+          type="index"
+          label="序号"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="orgName"
+          label="转诊时间"
+          sortable
+        >
+        </el-table-column>
+        <el-table-column
+          prop="orgTypeName"
+          label="转诊反向"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="crowdTotal"
+          label="患者"
+
+        >
+        </el-table-column>
+        <el-table-column
+          prop="signingAmount"
+          label="转出医院"
+
+        >
+        </el-table-column>
+        <el-table-column
+          prop="signingPercentage"
+          label="转出科室"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="teamAmount"
+          label="转入医院"
+
+        >
+        </el-table-column>
+        <el-table-column
+          prop="generalAmount"
+          label="转入科室"
+
+        >
+        </el-table-column>
+        <el-table-column
+          prop="emphasisAmount"
+          label="状态"
+
+        >
+        </el-table-column>
+        <el-table-column
+          prop="emphasisAmount"
+          label="转诊耗时"
+
+        >
+        </el-table-column>
+
+      </el-table>
+      <div class="page">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="listTotal">
+        </el-pagination>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<script>
+    export default {
+        name: "transfer",
+        data() {
+            return {
+
+                titleData: [],
+
+                radio1: '0',
+                currentPage: 1,
+
+                listTotal: 0,
+                pageSize: 5,
+                pageNum: 1,
+
+                value2: '',
+            }
+        },
+
+        created() {
+
+        },
+        methods: {
+
+            // get
+
+            getNewData(radio1) {
+                this.value2 = ''
+                this.pageNum = 1
+
+            },
+
+            handleSizeChange(val) {
+                this.pageSize=val
+                this.pageNum=1
+                // this.getGov(this.radio1,this.value2)
+                // this.getLIstData(this.radio1,this.value2)
+            },
+            handleCurrentChange(val) {
+                this.pageNum=val
+                // this.getGov(this.radio1,this.value2)
+                // this.getLIstData(this.radio1,this.value2)
+
+            },
+
+        },
+
+        components: {}
+    }
+</script>
+
+<style scoped>
+  .market_out .el-range-separator {
+    width: 10% !important;
+  }
+</style>
+
+<style scoped lang="scss">
+  .box {
+    .title {
+      display: flex;
+      justify-content: space-between;
+
+      div {
+        display: flex;
+      }
+    }
+    .info {
+      margin-top: 10px;
+      border: 1px solid #EBEEF5;
+      background-color: #FFF;
+      color: #303133;
+      transition: .3s;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+
+      ul {
+        display: flex;
+        font-size: 20px;
+
+        li {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 10px 0;
+          margin: 10px 0;
+          border-right: 1px solid #cfcfcf;
+
+          &:last-child {
+            border-right: none;
+          }
+        }
+      }
+    }
+    .table-wrap {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #EBEEF5;
+      background-color: #FFF;
+      color: #303133;
+      transition: .3s;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      .page {
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px 20px 0 20px;
+      }
+    }
+  }
+</style>
