@@ -175,7 +175,7 @@
                 let gdata = {
                     startTime: this.startdate,
                     endTime: this.end,
-                    orgId: this.orgId,
+                    govId: state.govId,
                 }
 
                 this.$axios({

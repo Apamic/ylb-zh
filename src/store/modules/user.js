@@ -19,13 +19,16 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_gov: (state, avatar) => {
-    state.gov = avatar
+  SET_GOV: (state, gov) => {
+    state.gov = gov
     // console.log(state.gov);
+  },
+  SET_ORGNAME: (state,orgName) => {
+    state.orgName = orgName
   },
 
   SET_LOGO: (state,logo) => {
-
+    state.logo = logo
   },
 
 }
@@ -40,8 +43,9 @@ const actions = {
         commit('SET_TOKEN', data.user.token)
         commit('SET_NAME', data.user.nickName)
         commit('SET_AVATAR', data.user.logo)
-        console.log(data.user.govId)
         commit('SET_gov', data.user.govId)
+        commit('SET_ORGNAME',data.user.orgName)
+        commit('SET_LOGO',data.user.logo)
         setToken('govId', data.user.govId)
         setToken('govName',data.user.govName)
         setToken('token', data.user.token)

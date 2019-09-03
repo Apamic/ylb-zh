@@ -63,6 +63,11 @@
 </template>
 
 <script>
+  // import AMap from 'vue-amap'
+  // AMap.initAMapApiLoader({
+  //     key: '1513bd9ff523b8d0875d4a92e1a71c29',
+  //     plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType','AMap.Geolocation','AMap.Heatmap','AMap.PlaceSearch']
+  // })
 
   import { lazyAMapApiLoaderInstance } from 'vue-amap';
 

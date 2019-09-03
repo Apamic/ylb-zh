@@ -37,10 +37,10 @@
           <span>签约量</span>
           <p>{{signingAmount}}</p>
         </li>
-        <li>
-          <span>总签约率</span>
-          <p>{{signingPercentage}}%</p>
-        </li>
+<!--        <li>-->
+<!--          <span>总签约率</span>-->
+<!--          <p>{{signingPercentage}}%</p>-->
+<!--        </li>-->
         <li>
           <span>一般人群数量</span>
           <p>{{ generalCrowdAmount}}</p>

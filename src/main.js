@@ -17,8 +17,12 @@ import '@/icons' // icon
 import '@/permission' // permission control
 import AMap from 'vue-amap'
 import axios from '@/utils/request.js'
+import axios2 from '@/utils/request2.js'
+
 
 Vue.prototype.$axios = axios
+Vue.prototype.$axios2 = axios2
+
 
 Vue.use(AMap)
 AMap.initAMapApiLoader({

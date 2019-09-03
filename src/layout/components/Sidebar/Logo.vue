@@ -3,7 +3,7 @@
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <div class="flex">
-          <img v-if="logo === 'null'"  class="sidebar-logo" src="@/assets/logo.png" width="32" height="32"/>
+          <img v-if="logo == 'null'"  class="sidebar-logo" src="@/assets/logo.png" width="32" height="32"/>
           <img v-else :src="logo" class="sidebar-logo"/>
 <!--          <h1 class="sidebar-title">{{ title }}</h1>-->
         </div>
@@ -13,6 +13,7 @@
           <img v-if="logo === 'null'"  class="sidebar-logo" src="@/assets/logo.png" width="32" height="32"/>
           <img v-else :src="logo" class="sidebar-logo"/>
           <h1 class="sidebar-title">{{ title }}</h1>
+<!--          <h1 class="sidebar-title">{{ $store.state.orgName }}</h1>-->
         </div>
       </router-link>
     </transition>
@@ -53,6 +54,8 @@ export default {
 
       this.title = state.govName
       this.logo = state.avatar
+
+      console.log(this.$store.state)
       // console.log(this.logo)
       // console.log(state.avatar)
   }
