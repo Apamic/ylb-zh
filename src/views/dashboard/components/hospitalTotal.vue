@@ -13,28 +13,28 @@
         <div class="left"><</div>
         <div class="center clearfix">
           <el-row style="height: 100%">
-            <el-col :xs="4" :sm="4" :lg="4">
+            <el-col :xs="4" :sm="4" :lg="4" :class="{'pit':nameIndex == 0}">
               <p class="t1">在线问诊量</p>
               <span class="text-total t4">总销量</span>
               <span class="text-num t3">{{data.onlineInquiryAmount}}</span>
             </el-col>
-            <el-col :xs="4" :sm="4" :lg="4">
+            <el-col :xs="4" :sm="4" :lg="4" :class="{'pit':nameIndex == 1}">
               <p>特色服务包销量</p>
               <span class="text-total">总销量</span>
               <span class="text-num">{{data.specialServiceAmount}}</span>
             </el-col>
-            <el-col :xs="4" :sm="4" :lg="4">
+            <el-col :xs="4" :sm="4" :lg="4" :class="{'pit':nameIndex == 2}">
               <p>医疗服务包销量</p>
               <span class="text-total">总销量</span>
               <span class="text-num">{{data.medicalServiceAmount}}</span>
             </el-col>
 
-            <el-col :xs="4" :sm="4" :lg="4">
+            <el-col :xs="4" :sm="4" :lg="4" :class="{'pit':nameIndex == 3}">
               <p>健康产品销量</p>
               <span class="text-total">总销量</span>
               <span class="text-num">{{data.healthProductAmount}}</span>
             </el-col>
-            <el-col :xs="4" :sm="4" :lg="4">
+            <el-col :xs="4" :sm="4" :lg="4" :class="{'pit':nameIndex == 4}">
               <p>上门服务销量</p>
               <span class="text-total">总销量</span>
               <span class="text-num">{{data.homeServiceAmount}}</span>
@@ -44,7 +44,7 @@
         <div class="right">></div>
       </div>
       <div class="line-box" style="margin-top: 15px">
-        <lines :lineData="lineData" height="100%" width="100%"/>
+        <lines :lineData="lineData" :nameIndex="nameIndex" height="100%" width="100%"/>
       </div>
     </el-card>
   </div>
@@ -52,15 +52,16 @@
 </template>
 
 <script>
-  import lines from '../charts/line.vue'
+    import lines from '../charts/line.vue'
+
     export default {
         data() {
             return {
-
+                nameIndex: 1
             }
         },
         components: {
-          lines
+            lines
         },
         methods: {},
 
@@ -84,47 +85,52 @@
     }
 </script>
 <style lang="scss" scoped>
-  .line-box{
+  .line-box {
     width: 100%;
     height: 400px;
   }
-  .tab-title{
-      height: 134px;
-    .left{
+
+  .tab-title {
+    height: 134px;
+
+    .left {
       width: 2%;
       height: 100%;
       float: left;
       line-height: 134px;
       border: 1px solid #ccc;
-      border-right:none;
+      border-right: none;
       text-align: center;
       font-size: 22px;
     }
-    .right{
+
+    .right {
       width: 2%;
       float: left;
       height: 100%;
       line-height: 134px;
       border: 1px solid #ccc;
-      border-left:none;
+      border-left: none;
       text-align: center;
       font-size: 22px;
     }
-    .el-row:first-child{
+
+    .el-row:first-child {
       border-left: 1px solid #ccc;
     }
-    .el-row:last-child{
+
+    .el-row:last-child {
       border-right: 1px solid #ccc;
     }
 
-    .center{
+    .center {
       width: 96%;
       float: left;
       height: 100%;
       /*border-top:1px solid #ccc;*/
       /*border-bottom: 1px solid #ccc;*/
 
-      .el-col{
+      .el-col {
         width: 20%;
         text-align: left;
         line-height: 37px;
@@ -136,28 +142,33 @@
         height: 100%;
         border-top: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
-        p{
+        cursor: pointer;
+        p {
           margin: 0;
-          padding:0;
+          padding: 0;
           font-size: 16px;
         }
-        span{
+
+        span {
           display: block;
         }
-        .text-total{
+
+        .text-total {
           font-size: 12px;
 
         }
-        .text-num{
+
+        .text-num {
           font-size: 28px;
         }
       }
-      .el-col:hover{
+
+      .pit {
         border: 1px solid #ccc;
         border-bottom: none;
         border-top: 4px solid deepskyblue;
-
       }
+
     }
   }
 
