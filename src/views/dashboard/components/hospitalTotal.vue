@@ -143,6 +143,7 @@
         border-top: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
         cursor: pointer;
+
         p {
           margin: 0;
           padding: 0;

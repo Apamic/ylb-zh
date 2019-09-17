@@ -5,7 +5,8 @@ import {getToken} from '@/utils/auth'
 import service from "./request";
 
 const service2 = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API2, // url = base url + request url
+  baseURL: 'http://47.92.25.25:8011/', // url = base url + request url
+  //baseURL: process.env.VUE_APP_BASE_API2, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
@@ -43,7 +44,7 @@ service2.interceptors.response.use(
    */
   response => {
     // console.log(response);
-    const res = response.data
+    // const res = response.data
     console.log(res)
     // if the custom code is not 20000, it is judged as an error.
     if (res.rtnCode !== '1') {

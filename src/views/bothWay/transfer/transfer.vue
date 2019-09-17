@@ -5,7 +5,7 @@
       <div class="market_out">
         <div class="fr" style="margin-right: 20px">
           <el-radio-group v-model="radio1" @change="getNewData(radio1)">
-            <el-radio-button label="0">全部</el-radio-button>
+<!--            <el-radio-button label="0">全部</el-radio-button>-->
             <el-radio-button label="1">今日</el-radio-button>
             <el-radio-button label="2">本周</el-radio-button>
             <el-radio-button label="3">本月</el-radio-button>
@@ -133,6 +133,16 @@
 </template>
 
 <script>
+
+    import {getToken} from '@/utils/auth'
+
+    const state = {
+        token: getToken('token'),
+        name: getToken('nickName'),
+        avatar: getToken('logo'),
+        govId: getToken('govId')
+    }
+
     export default {
         name: "transfer",
         data() {
@@ -140,26 +150,46 @@
 
                 titleData: [],
 
-                radio1: '0',
+                radio1: '1',
                 currentPage: 1,
 
                 listTotal: 0,
-                pageSize: 5,
+                pageSize: 10,
                 pageNum: 1,
 
-                value2: '',
+                value2: [],
             }
         },
 
         created() {
-
+            this.getRecordList()
         },
         methods: {
 
-            // get
+            getRecordList() {
+                this.$axios2({
+                    url: 'referral/government/record/list',
+                    method: 'post',
+                    data: {
+                        govId: state.govId,
+                        pageNum: this.pageNum,
+                        pageSize: this.pageSize,
+                        timeInterval: this.radio1,
+                        timeStart: this.value2[0],
+                        timeEnd: this.value2[1]
+                    }
+                }).then(res => {
+                    console.log(res)
+                })
+            },
+
+            selectTime(val) {
+                this.value2 = val
+                this.radio1 = ''
+            },
 
             getNewData(radio1) {
-                this.value2 = ''
+                this.value2 = []
                 this.pageNum = 1
 
             },
@@ -189,7 +219,7 @@
   }
 </style>
 
-<style scoped lang="scss">
+<style lang="scss">
   .box {
     .title {
       display: flex;
