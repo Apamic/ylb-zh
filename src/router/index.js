@@ -127,14 +127,6 @@ export const constantRoutes = [
       },
       {
         hidden: true,
-        path: '/statistics/index',
-        name: 'bothWayStatistics',
-        // redirect: '/familyDoctor/community/index',
-        component: () => import('@/views/bothWay/statistics/index'),
-        meta: { title: '转诊统计', icon: 'form' }
-      },
-      {
-        hidden: true,
         path: '/statistics/detail',
         name: 'bothWayStatisticsDetail',
         // redirect: '/familyDoctor/community/index',

@@ -4,8 +4,8 @@
       <span>转诊数据</span>
       <div class="market_out">
         <div class="fr" style="margin-right: 20px">
-          <el-radio-group v-model="radio1" @change="getNewData(radio1)">
-<!--            <el-radio-button label="0">全部</el-radio-button>-->
+          <el-radio-group v-model="radio1" @change="getNewData">
+            <!--            <el-radio-button label="0">全部</el-radio-button>-->
             <el-radio-button label="1">今日</el-radio-button>
             <el-radio-button label="2">本周</el-radio-button>
             <el-radio-button label="3">本月</el-radio-button>
@@ -31,85 +31,94 @@
       <ul>
         <li>
           <span>总转诊数</span>
-          <p>{{titleData.oneLevelAmount}}0</p>
+          <p>{{data.total}}</p>
         </li>
         <li>
           <span>上转数量</span>
-          <p>{{titleData.twoLevelAmount}}1</p>
+          <p>{{data.totalUpRefNum}}</p>
         </li>
         <li>
           <span>下转数量</span>
-          <p>{{titleData.threeLevelAmount}}2</p>
+          <p>{{data.totalDownRefNum}}</p>
         </li>
         <li>
           <span>转诊平均耗时</span>
-          <p>{{titleData.officialDoctorAmount}}3</p>
+          <p>{{data.avgRefUseTime}}</p>
         </li>
 
       </ul>
     </div>
     <div class="table-wrap">
       <div>本区域机构转诊数据</div>
-      <el-table>
-        :data="tableData"
+      <el-table
+        :data="data.data"
         style="width: 100%"
-        :default-sort="{prop: 'date', order: 'descending'}"
         empty-text="暂无数据"
         :fit="true"
-        >
+      >
         <el-table-column
           type="index"
           label="序号"
         >
         </el-table-column>
         <el-table-column
-          prop="orgName"
+          prop="timeReferral"
           label="转诊时间"
           sortable
         >
         </el-table-column>
         <el-table-column
-          prop="orgTypeName"
-          label="转诊反向"
+          prop="refTypeName"
+          label="转诊方向"
         >
         </el-table-column>
         <el-table-column
-          prop="crowdTotal"
+          prop="patientName"
           label="患者"
 
         >
         </el-table-column>
         <el-table-column
-          prop="signingAmount"
+          prop="outOrgName"
           label="转出医院"
 
         >
         </el-table-column>
         <el-table-column
-          prop="signingPercentage"
+          prop="outDeptName"
           label="转出科室"
         >
         </el-table-column>
         <el-table-column
-          prop="teamAmount"
+          prop="applicationDoctorName"
+          label="转出医生"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="inOrgName"
           label="转入医院"
 
         >
         </el-table-column>
         <el-table-column
-          prop="generalAmount"
+          prop="inDeptName"
           label="转入科室"
 
         >
         </el-table-column>
         <el-table-column
-          prop="emphasisAmount"
           label="状态"
-
         >
+          <template slot-scope="scope">
+            <span v-if="scope.row.refStatus == '1044101'">转诊发起审批中</span>
+            <span v-if="scope.row.refStatus == '1044102'">转诊接收审批中</span>
+            <span style="color: red;" v-if="scope.row.refStatus == '1044103'">转诊发起审批失败</span>
+            <span style="color: #67c23a;" v-if="scope.row.refStatus == '1044104'">转诊成功</span>
+            <span style="color: red;" v-if="scope.row.refStatus == '1044105'">转诊接收审批失败</span>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="emphasisAmount"
+          prop="refUseTime"
           label="转诊耗时"
 
         >
@@ -120,7 +129,7 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
+          :current-page="pageNum"
           :page-sizes="[5, 10, 15, 20]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
@@ -151,13 +160,14 @@
                 titleData: [],
 
                 radio1: '1',
-                currentPage: 1,
 
                 listTotal: 0,
                 pageSize: 10,
                 pageNum: 1,
 
                 value2: [],
+
+                data: {}
             }
         },
 
@@ -179,32 +189,33 @@
                         timeEnd: this.value2[1]
                     }
                 }).then(res => {
-                    console.log(res)
+                    this.data = res
+                    this.listTotal = this.data.total
+
                 })
             },
 
             selectTime(val) {
                 this.value2 = val
                 this.radio1 = ''
+                this.pageNum = 1
+                this.getRecordList()
             },
 
-            getNewData(radio1) {
+            getNewData() {
                 this.value2 = []
                 this.pageNum = 1
-
+                this.getRecordList()
             },
 
             handleSizeChange(val) {
                 this.pageSize=val
                 this.pageNum=1
-                // this.getGov(this.radio1,this.value2)
-                // this.getLIstData(this.radio1,this.value2)
+                this.getRecordList()
             },
             handleCurrentChange(val) {
                 this.pageNum=val
-                // this.getGov(this.radio1,this.value2)
-                // this.getLIstData(this.radio1,this.value2)
-
+                this.getRecordList()
             },
 
         },

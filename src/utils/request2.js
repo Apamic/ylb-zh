@@ -44,10 +44,10 @@ service2.interceptors.response.use(
    */
   response => {
     // console.log(response);
-    // const res = response.data
+    const res = response.data
     console.log(res)
     // if the custom code is not 20000, it is judged as an error.
-    if (res.rtnCode !== '1') {
+    if (res.rtnCode != '1') {
       Message({
         message: res.rtnMsg || 'Error',
         type: 'error',

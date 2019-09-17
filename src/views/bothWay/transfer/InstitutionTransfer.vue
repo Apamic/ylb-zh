@@ -4,8 +4,8 @@
       <span>转诊统计</span>
       <div class="market_out">
         <div class="fr" style="margin-right: 20px">
-          <el-radio-group v-model="radio1" @change="getNewData(radio1)">
-            <el-radio-button label="0">全部</el-radio-button>
+          <el-radio-group v-model="radio1" @change="getNewData">
+            <!--            <el-radio-button label="0">全部</el-radio-button>-->
             <el-radio-button label="1">今日</el-radio-button>
             <el-radio-button label="2">本周</el-radio-button>
             <el-radio-button label="3">本月</el-radio-button>
@@ -51,30 +51,30 @@
         >
         </el-table-column>
         <el-table-column
-          prop="orgTypeName"
+          prop="orgGradeName"
           label="类型"
         >
         </el-table-column>
         <el-table-column
-          prop="crowdTotal"
+          prop="outUpNum"
           label="转出(上转)次数"
 
         >
         </el-table-column>
         <el-table-column
-          prop="signingAmount"
+          prop="outDownNum"
           label="转出(下转)次数"
 
         >
         </el-table-column>
         <el-table-column
-          prop="crowdTotal"
+          prop="inUpNum"
           label="转出(上转)次数"
 
         >
         </el-table-column>
         <el-table-column
-          prop="signingAmount"
+          prop="inDownNum"
           label="转出(下转)次数"
 
         >
@@ -85,7 +85,7 @@
           prop="orgId"
         >
           <template slot-scope="scope">
-            <el-button type="primary" size="small"  @click="handleDelete(scope.$index, scope.row)" >详细</el-button>
+            <el-button type="primary" size="small"  @click="$router.push({path: '/statistics/detail',query: {orgId: scope.row.orgId}})" >详细</el-button>
           </template>
         </el-table-column>
 
@@ -95,7 +95,7 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
+          :current-page="pageNum"
           :page-sizes="[5, 10, 15, 20]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
@@ -107,36 +107,75 @@
 </template>
 
 <script>
+    import {getToken} from '@/utils/auth'
+    const state = {
+        token: getToken('token'),
+        name: getToken('nickName'),
+        avatar: getToken('logo'),
+        govId: getToken('govId')
+    }
+
     export default {
         name: "InstitutionTransfer",
         data() {
             return {
-                radio1: '0',
-                currentPage: 1,
+                radio1: '1',
 
                 listTotal: 0,
                 pageSize: 5,
                 pageNum: 1,
 
-                value2: '',
+                value2: [],
+
+                tableData: [],
             }
         },
 
         created() {
-
+            this.getGovernmentOrg()
         },
         methods: {
+
+            getGovernmentOrg() {
+                this.$axios2({
+                    url: 'referral/government/org',
+                    method: 'post',
+                    data: {
+                        govId: state.govId,
+                        pageNum: this.pageNum,
+                        pageSize: this.pageSize,
+                        timeInterval: this.radio1,
+                        timeStart: this.value2[0],
+                        timeEnd: this.value2[1]
+                    }
+                }).then(res => {
+                    this.tableData = res.data
+                    this.listTotal = res.total
+                })
+            },
+
+            selectTime(val) {
+                this.value2 = val
+                this.radio1 = ''
+                this.pageNum = 1
+                this.getGovernmentOrg()
+            },
+
             handleSizeChange(val) {
                 this.pageSize=val
                 this.pageNum=1
-                // this.getGov(this.radio1,this.value2)
-                // this.getLIstData(this.radio1,this.value2)
+                this.getGovernmentOrg()
             },
             handleCurrentChange(val) {
                 this.pageNum=val
-                // this.getGov(this.radio1,this.value2)
-                // this.getLIstData(this.radio1,this.value2)
+                this.getGovernmentOrg()
+            },
 
+            getNewData(val) {
+                this.radio1 = val
+                this.value2 = []
+                this.pageNum = 1
+                this.getGovernmentOrg()
             },
         },
 
